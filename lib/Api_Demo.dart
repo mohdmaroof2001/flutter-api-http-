@@ -29,117 +29,130 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('User Details'),
+        elevation: 0,
+        backgroundColor: Colors.orange,
+      ),
       body: SafeArea(
-        child: Container(
-          child: ListView.builder(
-            itemBuilder: (context, indexNo) {
-              var userData = arr[indexNo];
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    userDataModel data = userDataModel(
-                        userData['id'].toString(),
-                        userData['name'],
-                        userData['email'],
-                        userData['gender'],
-                        userData['status']);
-                    return UpdateData(
-                      store: data,
-                    );
-                  }));
-                },
-                child: Stack(
-                  alignment: AlignmentDirectional.centerEnd,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          deleteApi();
-                          apiCall();
-                        },
-                        icon: Icon(
-                          Icons.delete,
-                          size: 30,
-                        )),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Id: ${userData['id'].toString()}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            // color: Colors.w,
-                          ),
-                        ),
-                        // Text(
-                        //   userData['post_id'].toString(),
-                        //   style: TextStyle(fontSize: 18),
-                        // ),
-                        Text(
-                          'Name: ${userData['name']}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            // color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          'Email: ${userData['email']}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            // color: Colors.white,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "gender: ${userData["gender"]}",
-                              style: TextStyle(fontSize: 16),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+          child: Container(
+            child: ListView.builder(
+              itemBuilder: (context, indexNo) {
+                var userData = arr[indexNo];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      userDataModel data = userDataModel(
+                          userData['id'],
+                          userData['name'],
+                          userData['email'],
+                          userData['gender'],
+                          userData['status']);
+                      return UpdateData(
+                        store: data,
+                      );
+                    }));
+                  },
+                  child: Stack(
+                    alignment: AlignmentDirectional.centerEnd,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            deleteApi(userData);
+                            apiCall();
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            size: 30,
+                            color: Colors.red,
+                          )),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Id: ${userData['id'].toString()}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              // color: Colors.w,
                             ),
-                            userData["gender"] == "male"
-                                ? Icon(Icons.male)
-                                : Icon(Icons.female)
-                          ],
-                        ),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Status: ${userData['status']}',
-                              style: TextStyle(
-                                fontSize: 16,
-                                // color: Colors.white,
+                          ),
+                          // Text(
+                          //   userData['post_id'].toString(),
+                          //   style: TextStyle(fontSize: 18),
+                          // ),
+                          Text(
+                            'Name: ${userData['name']}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              // color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            'Email: ${userData['email']}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              // color: Colors.white,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "gender: ${userData["gender"]}",
+                                style: TextStyle(fontSize: 16),
                               ),
-                            ),
-                            //teermaeri
-                            userData["status"] == "active"
-                                ? Container(
-                                    width: 10,
-                                    height: 20,
-                                    color: Colors.green,
-                                  )
-                                : Container(
-                                    width: 10,
-                                    height: 20,
-                                    color: Colors.red,
-                                  )
-                          ],
-                        ),
+                              userData["gender"] == "male"
+                                  ? Icon(Icons.male, color: Colors.blue)
+                                  : Icon(Icons.female, color: Colors.pink)
+                            ],
+                          ),
 
-                        SizedBox(
-                          height: 25,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-            itemCount: arr.length,
+                          Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Status: ${userData['status']}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  // color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              //teermaeri
+                              userData["status"] == "active"
+                                  ? Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: Colors.green,
+                                    )
+                                  : Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: Colors.red,
+                                    )
+                            ],
+                          ),
+
+                          SizedBox(
+                            height: 25,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+              itemCount: arr.length,
+            ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.orange,
           child: Icon(Icons.add),
           onPressed: () async {
             var result = await Navigator.push(
@@ -149,7 +162,7 @@ class _HomePageState extends State<HomePage> {
               print("Firse Api Call");
               apiCall();
             }
-            //  if (result == Sahi) {
+            // if (result == true) {
             //   print("Firse Api Call");
             //   apiCall();
             // }
@@ -169,18 +182,18 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  secondapiCall() async {
-    var recp =
-        await http.get(Uri.parse('https://gorest.co.in/public/v1/comments'));
-    var jsonObj = jsonDecode(recp.body);
-    setState(() {
-      arr = jsonObj['data'];
-    });
-  }
+  // secondapiCall() async {
+  //   var recp =
+  //       await http.get(Uri.parse('https://gorest.co.in/public/v1/comments'));
+  //   var jsonObj = jsonDecode(recp.body);
+  //   setState(() {
+  //     arr = jsonObj['data'];
+  //   });
+  // }
 
-  deleteApi() async {
+  deleteApi(userData) async {
     var responce = await http.delete(
-        Uri.parse('https://gorest.co.in/public/v1/user/3315'),
+        Uri.parse('https://gorest.co.in/public/v1/user/${userData['id']}'),
         headers: {
           "Authorization":
               "Bearer 548704c5e4646994d407f8dd1b4feeb10d403dd9e4606c5b5513191a68f1edf8"

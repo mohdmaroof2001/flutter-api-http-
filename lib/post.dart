@@ -18,6 +18,9 @@ class PostExam extends StatefulWidget {
 class _PostExamState extends State<PostExam> {
   TextEditingController nameTEC = TextEditingController();
   TextEditingController emailTEC = TextEditingController();
+  TextEditingController genderTEC = TextEditingController();
+  TextEditingController statusTEC = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -28,9 +31,9 @@ class _PostExamState extends State<PostExam> {
     var resp = await http
         .post(Uri.parse('https://gorest.co.in/public/v1/users'), body: {
       "name": nameTEC.text,
-      "gender": "Male",
+      "gender": genderTEC.text,
       "email": emailTEC.text,
-      "status": "active",
+      "status": statusTEC.text,
     }, headers: {
       "Authorization":
           "Bearer 548704c5e4646994d407f8dd1b4feeb10d403dd9e4606c5b5513191a68f1edf8"
@@ -49,68 +52,148 @@ class _PostExamState extends State<PostExam> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Name',
-              style: TextStyle(fontSize: 25),
+      appBar: AppBar(
+        title: Text("Add your Details"),
+        backgroundColor: Colors.orange,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 25,
+                ),
+                TextField(
+                  controller: nameTEC,
+                  decoration: InputDecoration(
+                      hintText: 'Name',
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.orange)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.orange))),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                TextField(
+                  controller: emailTEC,
+                  decoration: InputDecoration(
+                      hintText: 'Email',
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.orange)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.orange))),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                TextField(
+                  controller: genderTEC,
+                  decoration: InputDecoration(
+                      hintText: 'Gender',
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.orange)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.orange))),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                TextField(
+                  controller: statusTEC,
+                  decoration: InputDecoration(
+                      hintText: 'Active / Inactive',
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.orange)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.orange))),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: 150,
+                      height: 45,
+                      child: MaterialButton(
+                        elevation: 15,
+                        color: Colors.orange,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(28),
+                        ),
+                        onPressed: () {
+                          callAddApi();
+                        },
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Container(
+                      width: 150,
+                      height: 45,
+                      child: MaterialButton(
+                        elevation: 15,
+                        color: Colors.orange,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(28),
+                        ),
+                        onPressed: () {
+                          luncherUrl();
+                        },
+                        child: Text(
+                          "Email",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Container(
+                  width: 350,
+                  height: 45,
+                  child: MaterialButton(
+                    elevation: 15,
+                    color: Colors.orange,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "Back",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+              ],
             ),
-            TextField(
-              controller: nameTEC,
-              decoration: InputDecoration(hintText: 'Enter your Name'),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            Text(
-              'Email',
-              style: TextStyle(fontSize: 25),
-            ),
-            TextField(
-              controller: emailTEC,
-              decoration: InputDecoration(hintText: 'Enter your Email'),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                callAddApi();
-              },
-              child: Text("Submit"),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // callAddApi();
-                Navigator.pop(context);
-              },
-              child: Text("back"),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // const url = 'tel:+1 555 010 999';
-                luncherUrl();
-              },
-              child: Text("Open Email"),
-            )
-          ],
+          ),
         ),
       ),
     );
   }
 
   void luncherUrl() async {
-    var url = await canLaunch('https://mail.google.com')
-        ? await launch('https://mail.google.com')
+    var url = await canLaunch('mailto:')
+        ? await launch('mailto:')
         : throw 'Could Not Lunch $luncherUrl()';
   }
 }

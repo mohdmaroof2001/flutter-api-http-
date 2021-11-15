@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 class userDataModel {
-  final String id;
+  final int id;
   final String name;
   final String email;
   final String gender;
