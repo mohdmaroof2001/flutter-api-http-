@@ -19,6 +19,8 @@ class _HomePageState extends State<HomePage> {
   // var count = 0;
   var arr = [];
 
+  bool isEnable = false;
+
   @override
   void initState() {
     super.initState();
@@ -36,7 +38,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+          padding: const EdgeInsets.only(left: 10, right: 10),
           child: Container(
             child: ListView.builder(
               itemBuilder: (context, indexNo) {
@@ -61,8 +63,12 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       IconButton(
                           onPressed: () {
+                            setState(() {
+                              arr.remove(indexNo);
+                              // isEnable = true;
+                            });
                             deleteApi(userData);
-                            apiCall();
+                            // apiCall();
                           },
                           icon: Icon(
                             Icons.delete,
@@ -193,7 +199,7 @@ class _HomePageState extends State<HomePage> {
 
   deleteApi(userData) async {
     var responce = await http.delete(
-        Uri.parse('https://gorest.co.in/public/v1/user/${userData['id']}'),
+        Uri.parse('https://gorest.co.in/public/v1/users/${userData['id']}'),
         headers: {
           "Authorization":
               "Bearer 548704c5e4646994d407f8dd1b4feeb10d403dd9e4606c5b5513191a68f1edf8"
